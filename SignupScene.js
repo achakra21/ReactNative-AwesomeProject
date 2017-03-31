@@ -1,79 +1,24 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight,Image,StyleSheet,Navigator,AppRegistry,ListView,Alert} from 'react-native';
+import { View, Text, TouchableHighlight,Image,StyleSheet,Navigator,AppRegistry,ListView} from 'react-native';
 var REQUEST_URL = 'https://jsonplaceholder.typicode.com/photos';
 var MOVIES_PER_ROW = 3;
 var arr = [];
 
-export default class DashBoardScene extends Component {
+export default class SignupScene extends Component {
 constructor(props){
   super(props);
   this.state = {
-  dataSource: null,
-  ds: null,
-  url:"",
-  title:"",
-  loaded: false,
-};
-
-ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-
+ 
+    };
 }
 
    componentWillMount () {
 
-       this.fetchData();
- 
+     // this.fetchData();
      }
 
-   rowPressed(rowID) {
-
-    
-     this.state.url = arr[rowID].url;
-     this.state.title = arr[rowID].title;
-  
- 
-   this.props.navigator.push({
-     id: "productdetails",
-     index:2,
-     title:"ProductDetails",
-     passProps: {
-            name:'productdetails',
-            component: DashBoardScene,
-            url:this.state.url,
-            title: this.state.title,
-          
-            
-        },
-    
-     
-   });
-}
-
-     fetchData() {
- 
-    fetch(REQUEST_URL)
-      .then((response) => response.json())
-      .then((responseData) => {
-
-      
-      
-        for(var x in responseData){
- 
-
-      arr.push(responseData[x]);
-        }
-            this.setState({
-            loaded: true,
 
      
-     // set the datasource here    
-     dataSource: ds.cloneWithRows(arr)
-    });
-      })
-      .done();
-      
-  }
 //rowID is the row postion 
  renderRow(rowData, sectionID, rowID) {
     return (
@@ -129,9 +74,10 @@ render() {
   }
 }
 
-DashBoardScene.propTypes = {
+SignupScene.propTypes = {
   title: PropTypes.string.isRequired,
- 
+ // onForward: PropTypes.func.isRequired,
+ // onBack: PropTypes.func.isRequired,
 };
 
 var styles = StyleSheet.create({
@@ -193,7 +139,7 @@ var styles = StyleSheet.create({
 
 });
 
-AppRegistry.registerComponent('DashBoardScene', () => DashBoardScene);
+AppRegistry.registerComponent('SignupScene', () => SignupScene);
 
 
 

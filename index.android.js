@@ -11,6 +11,8 @@ import MyScene from './MyScene';
 import DashBoardScene from './DashBoardScene';
 import ProductList from './ProductList';
 import ProductDetails from './ProductDetails';
+import LoginScene from './LoginScene';
+import SignupScene from './SignupScene';
 
 
 
@@ -57,9 +59,9 @@ export default class AwesomeProject extends Component {
     switch (route.id) {
       case 'myscene':
         return (<MyScene title="Myscene" navigator={navigator}  {...route.passProps} route={route} />)
-      case 'dashboard':
+        case 'dashboard':
 
-        return (<DashBoardScene title="DashBoardScene" navigator={navigator}  {...route.passProps} route={route} />)
+       return (<DashBoardScene title="DashBoardScene" navigator={navigator}  {...route.passProps} route={route} />)
 
       case 'productlist':
 
@@ -67,12 +69,16 @@ export default class AwesomeProject extends Component {
 
       case 'productdetails':
 
-        //{...route.passProps}  route={route} must be declared to initialize the "passProps"
         return (<ProductDetails title="ProductDetails" navigator={navigator} {...route.passProps} route={route} />)
 
-    }
+      case 'login':
+        return (<LoginScene title="LoginScene" navigator={navigator} {...route.passProps} route={route} />)
 
-  }
+        case 'signup':
+        return (<SignupScene title="SignupScene" navigator={navigator} {...route.passProps} route={route} />)
+        }
+
+    }
 
   render() {
 

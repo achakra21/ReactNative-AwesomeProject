@@ -15,8 +15,8 @@ var navigator = this.props.navigator;
      
 
          setTimeout(function(){navigator.push({
-             id: 'dashboard',
-             title: 'DashBoardScene',
+             id: 'login',
+             title: 'LoginScene',
              index: 1
 
             
