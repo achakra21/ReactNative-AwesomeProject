@@ -1,116 +1,113 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight,Image,StyleSheet,Navigator,AppRegistry,ListView,Alert} from 'react-native';
-var REQUEST_URL = 'https://jsonplaceholder.typicode.com/photos';
+import { View, Text, TouchableHighlight, Image, StyleSheet, Navigator, AppRegistry, ListView, Alert } from 'react-native';
+//var REQUEST_URL = 'https://jsonplaceholder.typicode.com/photos';//http://192.168.43.79:3000
+var REQUEST_URL = 'http://192.168.0.86:3000/findallitems';
 var MOVIES_PER_ROW = 3;
 var arr = [];
 
 export default class DashBoardScene extends Component {
-constructor(props){
-  super(props);
-  this.state = {
-  dataSource: null,
-  ds: null,
-  url:"",
-  title:"",
-  loaded: false,
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataSource: null,
+      ds: null,
+      url: "",
+      title: "",
+      loaded: false,
+    };
 
-ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 
-}
+  }
 
-   componentWillMount () {
+  componentWillMount() {
+    this.fetchData();
+  }
 
-       this.fetchData();
- 
-     }
+  rowPressed(rowID) {
 
-   rowPressed(rowID) {
+    console.log("responseData:::" + JSON.stringify(arr[rowID]));
+    this.state.url = arr[rowID].imgURL;
+    this.state.title = arr[rowID].description;
 
-    
-     this.state.url = arr[rowID].url;
-     this.state.title = arr[rowID].title;
-  
- 
-   this.props.navigator.push({
-     id: "productdetails",
-     index:2,
-     title:"ProductDetails",
-     passProps: {
-            name:'productdetails',
-            component: DashBoardScene,
-            url:this.state.url,
-            title: this.state.title,
-          
-            
-        },
-    
-     
-   });
-}
 
-     fetchData() {
- 
+    this.props.navigator.push({
+      id: "productdetails",
+      index: 2,
+      title: "ProductDetails",
+      passProps: {
+        name: 'productdetails',
+        component: DashBoardScene,
+        url: this.state.url,
+        title: this.state.title,
+
+
+      },
+
+
+    });
+  }
+
+  fetchData() {
+
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
 
-      
-      
-        for(var x in responseData){
- 
+        for (var x in responseData) {
 
-      arr.push(responseData[x]);
+
+          arr.push(responseData[x]);
         }
-            this.setState({
-            loaded: true,
+        this.setState({
+          loaded: true,
 
-     
-     // set the datasource here    
-     dataSource: ds.cloneWithRows(arr)
-    });
+
+          // set the datasource here    
+          dataSource: ds.cloneWithRows(arr)
+        });
       })
       .done();
-      
+
   }
-//rowID is the row postion 
- renderRow(rowData, sectionID, rowID) {
+  //rowID is the row postion 
+  renderRow(rowData, sectionID, rowID) {
     return (
-     
-     
-      <TouchableHighlight onPress={() => this.rowPressed(rowID)} 
-       style={styles.row}
-          underlayColor='#dddddd'>
+
+
+      <TouchableHighlight onPress={() => this.rowPressed(rowID)}
+        style={styles.row}
+        underlayColor='#dddddd'>
         <View>
-          
-           <Image style={ {width:120 ,height:120} }  source={{ uri: rowData.thumbnailUrl }} />
-           <Text style={styles.title}>{rowData.title.substring(0,10)}</Text>
-           <View style={styles.separator}/>
+
+          <Image style={{ width: 120, height: 120 }} source={{ uri: rowData.imgURL }} />
+          <Text style={styles.title}>{rowData.shopName}</Text>
+          <View style={styles.separator} />
         </View>
-         
-        
+
+
       </TouchableHighlight>
-     
+
     );
   }
 
-render() {
+  render() {
 
-     if (!this.state.loaded) {
-       return this.renderLoadingView();
-     }
-     
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+
     return (
       <View style={styles.mainView}>
-<ListView contentContainerStyle={styles.list}
+        <ListView contentContainerStyle={styles.list}
 
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
-        />
- 
-    </View>
-     
+          />
+
+      </View>
+
     )
   }
 
@@ -125,13 +122,13 @@ render() {
   }
 
   renderItem(item) {
-      return <Movie movie={item} />
+    return <Movie movie={item} />
   }
 }
 
 DashBoardScene.propTypes = {
   title: PropTypes.string.isRequired,
- 
+
 };
 
 var styles = StyleSheet.create({
@@ -143,7 +140,7 @@ var styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-   textAlign: 'center',
+    textAlign: 'center',
   },
   year: {
     textAlign: 'center',
@@ -162,24 +159,24 @@ var styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: '#eeeeee',
     paddingTop: 8,
-    },
-    item: {
-        backgroundColor: 'red',
-        margin: 3,
-        width: 100
-    },
-    row: {
+  },
+  item: {
+    backgroundColor: 'red',
+    margin: 3,
+    width: 100
+  },
+  row: {
     justifyContent: 'center',
     margin: 6,
     width: 150,
     height: 150,
     alignItems: 'center'
-  }, 
+  },
   mainView: {
     paddingTop: 22,
     flex: 1
   },
-   separator: {
+  separator: {
     height: 1,
     backgroundColor: '#DDDDDD'
   },

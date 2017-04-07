@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import DashBoardScene from './DashBoardScene';
 var REQUEST_URL = 'https://jsonplaceholder.typicode.com/photos';
-var LOGIN_URL = 'http://192.168.43.79:3000/findId?';//192.168.43.79//192.168.0.86
+var LOGIN_URL = 'http://192.168.0.86:3000/findId?';//192.168.43.79//192.168.0.86
 var MOVIES_PER_ROW = 3;
 var arr = [];
 
@@ -34,7 +34,7 @@ export default class LoginScene extends Component {
             .then((response) => {
                 if (response.status === 201) {
                     Alert.alert(""+JSON.stringify(response._bodyText));
-                    LOGIN_URL = 'http://192.168.43.79:3000/findId?';
+                    LOGIN_URL = 'http://192.168.0.86:3000/findId?'; //192.168.43.79//192.168.0.86
                     var navigator = this.props.navigator;
                     navigator.push({
                         id: 'dashboard',
@@ -45,10 +45,10 @@ export default class LoginScene extends Component {
 
                 } else if(response.status === 201){
                     Alert.alert(""+JSON.stringify(response._bodyText));
-                    LOGIN_URL = 'http://192.168.43.79:3000/findId?';
+                    LOGIN_URL = 'http://192.168.0.86:3000/findId?';//192.168.43.79//192.168.0.86
                     
                 } else if(response.status === 402){
-                    LOGIN_URL = 'http://192.168.43.79:3000/findId?';
+                    LOGIN_URL = 'http://192.168.0.86:3000/findId?';//192.168.43.79//192.168.0.86
                     // console.log("Response::"+JSON.stringify(response._bodyText));
                     Alert.alert(""+JSON.stringify(response._bodyText));
                 }
