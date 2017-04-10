@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+//import React from 'react';
 import React, { Component } from 'react';
 import { AppRegistry, Navigator, Alert, View, Text, TouchableHighlight, Image, StyleSheet, BackAndroid } from 'react-native';
 
@@ -13,8 +13,7 @@ import ProductList from './ProductList';
 import ProductDetails from './ProductDetails';
 import LoginScene from './LoginScene';
 import SignupScene from './SignupScene';
-
-
+import ForgotpwdScene from './ForgotpwdScene';
 
 export default class AwesomeProject extends Component {
 
@@ -76,6 +75,9 @@ export default class AwesomeProject extends Component {
 
         case 'signup':
         return (<SignupScene title="SignupScene" navigator={navigator} {...route.passProps} route={route} />)
+
+        case 'forgotpassword':
+        return (<ForgotpwdScene title="ForgotpwdScene" navigator={navigator} {...route.passProps} route={route} />)
         }
 
     }
