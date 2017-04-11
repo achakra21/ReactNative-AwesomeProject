@@ -25,11 +25,16 @@ export default class SignupScene extends Component {
       state: null,
       sex: null,
       address: null,
+      validemail: false,
+      validpassword: false,
+
 
     };
 
     this.goBack = this.goBack.bind(this);
     this.onRegister = this.onRegister.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validatePasswordRule = this.validatePasswordRule.bind(this);
 
   }
 
@@ -50,8 +55,40 @@ export default class SignupScene extends Component {
     this.props.navigator.pop();
   }
 
-  onRegister() {
-   
+  validatePasswordRule() {
+    // Alert.alert('Password validation callling');
+
+    fetch('http://192.168.0.86:3000/validatepwdrule', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password: this.state.password
+      })
+
+    }).then((response) => {
+      if (response.status === 201) {
+        console.log("" + JSON.stringify(response._bodyText));
+        this.state.validpassword = true;
+
+
+
+      } else if (response.status === 402) {
+        console.log("" + JSON.stringify(response._bodyText));
+        this.state.validpassword = false;
+
+      }
+    }).catch((error) => {
+      console.log("password rule validation" + error.message);
+    });
+
+  }
+
+  validateEmail() {
+
+    //Alert.alert('Email validation callling');
 
     fetch('http://192.168.0.86:3000/checkemailvalidation', {
       method: 'POST',
@@ -65,18 +102,99 @@ export default class SignupScene extends Component {
 
     }).then((response) => {
       if (response.status === 201) {
-         Alert.alert("" + JSON.stringify(response._bodyText));
-       
-       
+        console.log("" + JSON.stringify(response._bodyText));
+        this.state.validemail = true;
+
+
 
       } else if (response.status === 402) {
-        Alert.alert("" + JSON.stringify(response._bodyText));
-        
+        console.log("Email" + JSON.stringify(response._bodyText));
+        this.state.validemail = false;
+
       }
-    }).catch((error)=>{
-     
-      Alert.alert(""+error.message);
-  });
+    }).catch((error) => {
+
+      console.log("emailvalidation error" + error.message);
+    });
+
+
+  }
+
+  onRegister() {
+
+
+    var that = this;
+
+
+    var p = new Promise(function (resolve, reject) {
+
+      that.validateEmail();
+      resolve('Success!');
+      console.log('Promises');
+
+    });
+
+    p.then(function () {
+      that.validatePasswordRule();
+      console.log('then');
+    }).catch(function (reason) {
+      console.log('Reason' + reason);
+    });
+
+    p.then(function () {
+
+      if(!that.state.validemail) {
+
+          Alert.alert("Please enter a valid email id");
+      }
+
+      else if (that.state.validemail){
+       if(that.state.email != that.state.confirmpassword) {
+
+        Alert.alert("The email and confirmemail are not matching");
+
+      }
+      }
+
+      else if (that.state.country === null || that.state.country === 'undefined') {
+
+        Alert.alert("Please select the country");
+
+
+      }
+
+      else if (that.state.state === null || that.state.state === 'undefined') {
+        Alert.alert("Please select the state");
+
+      }
+
+      else if (that.state.city === null || that.state.city === 'undefined') {
+        Alert.alert("Please select the city");
+
+      }
+
+      else if (that.state.sex === null || that.state.sex === 'undefined') {
+        Alert.alert("Please select the sex");
+
+
+      }
+
+      else if (that.state.address === null || that.state.address === 'undefined') {
+        Alert.alert("Please enter address");
+
+      }
+
+      else if (that.state.pincode === null || that.state.pincode === 'undefined') {
+        Alert.alert("Please enter pincode");
+
+      }
+
+      console.log("The email is" + that.state.email);
+
+    }).catch(function (err) {
+      console.log('Reason2' + reason);
+    });
+
   }
 
   render() {
@@ -124,7 +242,7 @@ export default class SignupScene extends Component {
 
           <TextInput
             style={{ height: 40 }}
-            ref={(el) => { this.confirmpassword = el; } }
+            ref={(el) => { this.password = el; } }
             placeholder="enter your password"
             onChangeText={(password) => this.setState({ password })}
             value={this.state.password}
